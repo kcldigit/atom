@@ -1,0 +1,87 @@
+Instalación Ica-Atom 1.3.1
+1.	Comprobación de Apache
+Para la instalación se debe revisar la correcta instalación en el servidor Ubuntu 14, del servidor web Apache 2. Lo anterior se puede realizar con los siguientes comandos en la consola de Ubuntu:
+sudo apt -get update
+sudo service apache2 restart
+
+Si todo esta correcto estas operaciones debieran entregar mensajes de éxito.
+2.	Revisión PHP
+Con el fin de probar que nuestro sistema se ha configurado correctamente para PHP, podemos crear un script PHP muy básico.
+Vamos a llamar a este script info.php. Para que Apache pueda buscar el archivo y lo trabaje correctamente, se debe guardar en un directorio muy específico, al cual se le conoce como "raíz".
+En Ubuntu 14.04, este directorio se encuentra en /var/www/html/. Podemos crear el archivo en esa ubicación ejecutando:
+sudo nano /var/www/html/info.php
+
+Esto abrirá un archivo en blanco. Queremos poner el texto siguiente, que es el código PHP válido, dentro del archivo:
+
+<? Php
+phpinfo ();
+?>
+
+Cuando se ha terminado, guarda y cierre el archivo presionando "CTRL-X". Vas a tener que confirmar el guardado escribiendo "Y" y luego pulsando "ENTER" para confirmar la ubicación de almacenamiento de archivos.
+
+Ahora podemos probar si nuestro servidor web puede visualizar correctamente el contenido generado por un script PHP. Para probar esto, sólo tenemos que visitar esta página en nuestro navegador web. De nuevo necesitarás la dirección IP pública del servidor.
+
+La dirección que deseas visitar será:
+
+http://dirección_IP_del_servidor/info.php
+a.	Modificaremos la forma en que Apache sirve archivos cuando se solicita un directorio. Actualmente, si un usuario solicita un directorio del servidor, Apache buscará primero un archivo llamado index.html 
+Vamos a hacer Apache busque un archivo index.php primero. Para ello, escribe este comando para abrir el archivo dir.conf en un editor de texto con privilegios de root:
+sudo nano /etc/apache2/mods-enabled/dir.conf
+
+Se verá de forma similar a esto:
+
+<IfModule mod_dir.c>
+    DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
+</IfModule>
+
+Queremos mover el índice del archivo PHP destacándolo a la primera posición d	espués de la especificación del DirectoryIndex, así:
+
+<IfModule mod_dir.c>
+    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+</IfModule>
+
+Cuando se ha terminado, guarda y cierre el archivo presionando "CTRL-X". Vas a tener que confirmar el guardado escribiendo "Y" y luego pulsando "ENTER" para confirmar la ubicación de almacenamiento de archivos.
+
+Después de esto, tenemos que reiniciar el servidor web Apache para que nuestros cambios sean reconocidos. Puede hacerse ejecutando esto:
+sudo service apache2 restart
+b.	Posteriormente instalaremos algunas librerías de PHP necesarias para el buen funcionamiento del sistema con el siguiente comando:
+
+sudo apt-get install libapache2-mod-php5 php5 php5-mcrypt php5-xsl
+
+Después de esto, tenemos que reiniciar el servidor web Apache para que nuestros cambios sean reconocidos. Puede hacerse ejecutando esto:
+sudo service apache2 restart
+
+3.	Copiado de script
+Una vez realizado los trabajos con Apache y PHP, se copia en el directorio raíz del servidor los archivos y la programación del sistema completa y con todos sus subdirectorios. 
+Descomprima el archivo tar en el directorio de inicio de su servidor web. En un entorno de servidor web Apache, el directorio principal de su servidor web normalmente se denomina "public_html"
+Luego utilice el siguiente comando para descomprimir el archivo tar:
+Tar xvzf <icaatom-1.3.1.tgz
+
+4.	Ejecución del instalador
+Una vez que haya descargado ICA-AtoM y configurado sus permisos, estará listo para ejecutar el instalador. El instalador proporciona una interfaz web sencilla para guiarlo a través del proceso de instalación, la mayoría de las cuales es automatizada para usted.
+a.	Abra ICA-AtoM en su navegador web: La dirección web real (URL) del instalador web puede variar considerablemente dependiendo de la configuración de su servidor web. Sólo necesita apuntar a la raíz de la aplicación web ICA-AtoM. La URL suele ser algo así como "http://255.255.255.255/icaatom-1.3.1/". Consulte el sitio web de su proveedor de alojamiento para obtener información sobre cómo acceder a su sitio web desde Internet.
+Esta página puede tardar algún tiempo en cargar, mientras comprueba que su sistema cumple los requisitos para ejecutar la aplicación ICA-AtoM. Sólo verá una página en blanco mientras está realizando esta comprobación. Está funcionando siempre y cuando su navegador indique que todavía está esperando una respuesta.
+No interrumpa el proceso de comprobación del sistema. Si lo hace, tendrá que eliminar el directorio de la aplicación y descomprimir el tarball de nuevo o realizar una nueva comprobación del repositorio.
+
+b.	Consulte la sección de solución de problemas a continuación si aparece un mensaje de advertencia en la página "Comprobar el sistema". Cuando se realicen las comprobaciones del sistema, verá el enlace "Continuar" en "Comprobaciones del sistema". Haga clic en el enlace.
+
+c.	Ahora estará en la página de configuración de la base de datos. Después de verificar que su sistema cumple con los requisitos mínimos para ejecutar ICA-AtoM, el instalador le pedirá información sobre dónde almacenar sus datos ICA-AtoM. En este punto tendrá que introducir la siguiente información:
+
+Dirección: bibliotecades.czvz6jrh66tt.us-west-2.rds.amazonaws.com:3306
+DB: bibliotecades
+User: biblio_dig
+Pass: 1BiKom112$$%%$$!!!!2220122
+
+d.	El último paso es configurar el título y la descripción del sitio, así como crear un usuario administrador. Se deben utilizar los siguientes datos para esto:
+
+Nombre del Sitio : KCL-ATOM
+Descripción: Ica-Atom Komatsu Cummins
+Nombre administrador: kcladmin
+E-mail Administrador: blelal@kcl.cl
+Contraseña: simca66
+ 
+La configuración de ICA-AtoM y la carga de los datos de prueba tardarán algún tiempo. Por favor sea paciente.
+
+5.	Finalización
+Si todo va bien, debería verse la página de inicio del sistema, con su menú de navegación. Aquí se recomienda ingresar con la cuenta de administración al sistema, para probar las funcionalidades del mismo.
+
